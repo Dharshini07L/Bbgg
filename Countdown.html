@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teju's 19th Birthday Countdown</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Pacifico&family=Playfair+Display&display=swap" rel="stylesheet">
+
+<style>
+  /* Full-screen wrapper */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    background: #000;
+  }
+
+  /* Blurred background */
+  .bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('teju.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(4px);
+    z-index: 0;
+  }
+
+  /* Dark overlay for text visibility */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    z-index: 1;
+  }
+
+  /* Content container */
+  .content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertically center content */
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    padding: 0 20px;
+  }
+
+  /* Romantic message text */
+  .content h1 {
+    font-family: 'Dancing Script', cursive; /* change to Pacifico or Playfair Display if desired */
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+  }
+
+  /* Countdown timer */
+  #countdown {
+    font-family: 'Playfair Display', serif; /* choose font style */
+    font-size: 3em;
+    font-weight: bold;
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.8);
+    margin-top: 0;
+  }
+
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    animation: float 4s linear infinite;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<div class="content">
+  <h1>🎀💗 Counting down to the day the world got luckier…<br>and I got the best boyfriend ever. Happy 19 in advance, Teju! 💗🎀</h1>
+  <div id="countdown"></div>
+</div>
+
+<script>
+  // Countdown timer
+  const birthday = new Date("Dec 17, 2025 00:00:00").getTime();
+
+  const countdown = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = birthday - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML = 
+      `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+    if(distance < 0) {
+      clearInterval(countdown);
+      document.getElementById("countdown").innerHTML = "🎉 Happy 19th Birthday Teju! 💗🎀";
+    }
+  }, 1000);
+
+  // Floating hearts
+  const hearts = ['💗','❤️','💖'];
+  for(let i=0; i<20; i++){
+    let heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = Math.random()*100 + 'vw';
+    heart.style.animationDuration = 3 + Math.random()*3 + 's';
+    heart.style.fontSize = 16 + Math.random()*20 + 'px';
+    heart.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+    document.body.appendChild(heart);
+  }
+</script>
+<script>
+  document.body.style.cursor = "pointer";
+
+  document.body.addEventListener("touchstart", () => {
+    window.location.href = "birthday-tictactoe-html.html";
+  }, { once: true });
+</script>
+
+</body>
+</html>
