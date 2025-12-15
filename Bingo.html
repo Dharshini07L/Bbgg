@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 Bingo Card</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #f5e6e8, #e8d5d8);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    width: 100%;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.year {
+    font-size: 48px;
+    font-weight: bold;
+    color: #6b2c3e;
+    letter-spacing: 8px;
+}
+
+.bingo-text {
+    font-size: 96px;
+    font-weight: bold;
+    color: #6b2c3e;
+    letter-spacing: 12px;
+    margin-top: -10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.box {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 12px;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+}
+
+.box:hover {
+    transform: scale(1.05);
+}
+
+.maroon {
+    background: #6b2c3e;
+    color: #f5e6e8;
+}
+
+.pink {
+    background: #d5a5b0;
+    color: #6b2c3e;
+}
+
+.box.clicked {
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.bow {
+    position: absolute;
+    font-size: 48px;
+    animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.footer {
+    text-align: center;
+    font-size: 56px;
+    font-weight: bold;
+    color: #6b2c3e;
+    letter-spacing: 8px;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(107,44,62,0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.surprise-img {
+    width: 100%;
+    height: auto;
+    max-height: calc(80vh - 100px);
+    object-fit: contain;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    background: #d5a5b0;
+    color: #6b2c3e;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.close-btn:hover {
+    background: #c49aa5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="title">
+        <div class="year">20<br>25</div>
+        <div class="bingo-text">BINGO</div>
+    </div>
+
+    <div class="grid">
+        <!-- ROWS -->
+        <div class="box maroon">First Meet</div>
+        <div class="box pink">First Kiss</div>
+        <div class="box maroon">First Date</div>
+        <div class="box pink">Beach Day</div>
+        <div class="box maroon">Star Gazing</div>
+
+        <div class="box pink">Sleep Together</div>
+        <div class="box maroon">First Hug</div>
+        <div class="box pink">Cuddle Session</div>
+        <div class="box maroon">Bow Tie Fun</div>
+        <div class="box pink">Bet 1</div>
+
+        <div class="box maroon">Bet 2</div>
+        <div class="box pink">Bet 3</div>
+
+        <!-- CENTER BOX -->
+        <div class="box maroon special">FREE<br>LUCKY<br>SPACE</div>
+
+        <div class="box pink">Bet 4</div>
+        <div class="box maroon">Bet 5</div>
+
+        <div class="box pink">Photoshoot</div>
+        <div class="box maroon">Dress Up Babygirl</div>
+        <div class="box pink">Cherry Pics</div>
+        <div class="box maroon">Cute Gyat Pics</div>
+        <div class="box pink">Chair Fun</div>
+
+        <div class="box maroon">Luck</div>
+        <div class="box pink">Proposal</div>
+        <div class="box maroon">Late Night Walk</div>
+        <div class="box pink">Kitchen Counter</div>
+        <div class="box maroon">Surprise Fun</div>
+    </div>
+
+    <div class="footer">LET'S SEE</div>
+</div>
+
+<!-- SURPRISE MODAL -->
+<div class="modal" id="surpriseModal">
+    <div class="modal-content">
+        <img src="sur.jpg" alt="Surprise!" class="sur-img">
+        <button class="close-btn" onclick="closeModal()">Close ✨</button>
+    </div>
+</div>
+
+<script>
+const boxes = document.querySelectorAll('.box');
+
+boxes.forEach(box => {
+    box.addEventListener('click', () => {
+
+        // CENTER BOX → SURPRISE
+        if (box.classList.contains('special')) {
+            document.getElementById('surpriseModal').style.display = 'flex';
+            return;
+        }
+
+        // NORMAL BOX → BOW TOGGLE
+        if (box.classList.contains('clicked')) {
+            box.classList.remove('clicked');
+            const bow = box.querySelector('.bow');
+            if (bow) bow.remove();
+        } else {
+            box.classList.add('clicked');
+            const bow = document.createElement('div');
+            bow.className = 'bow';
+            bow.textContent = '🎀';
+            box.appendChild(bow);
+        }
+    });
+});
+
+function closeModal() {
+    document.getElementById('surpriseModal').style.display = 'none';
+}
+
+// Close on outside click
+window.onclick = e => {
+    const modal = document.getElementById('surpriseModal');
+    if (e.target === modal) modal.style.display = 'none';
+};
+</script>
+<script>
+let lastTap = 0; // timestamp of last tap
+
+function handleDoubleTap(e) {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength > 0 && tapLength < 400) {
+        // DOUBLE TAP detected → go to next page
+        window.location.href = "Pro.html"; // change to your page
+    }
+
+    lastTap = currentTime;
+}
+
+// Listen on the whole page
+document.addEventListener('touchstart', handleDoubleTap);
+document.addEventListener('click', handleDoubleTap);
+</script>
+
+</body>
+</html>
