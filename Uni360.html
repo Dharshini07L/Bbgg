@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>360 Universe</title>
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <a-scene>
+
+    <!-- 🌌 Universe Sky -->
+    <a-sky color="#050814"></a-sky>
+
+    <!-- 🌠 Star Field -->
+    <a-entity id="stars"></a-entity>
+
+    <!-- 💬 Main Dreamy Text -->
+    <a-text
+      value="Lost between planets and found in you"
+      position="0 1.7 -3"
+      align="center"
+      width="6"
+      color="#ffffff"
+      opacity="0.95">
+    </a-text>
+
+    <!-- 💜 Second Romantic Line -->
+    <a-text
+      value="In every universe, it’s you"
+      position="0 1.3 -3"
+      align="center"
+      width="5"
+      color="#dcd6ff"
+      opacity="0.85">
+    </a-text>
+
+    <!-- 🎥 Camera -->
+    <a-entity camera look-controls wasd-controls-enabled="false"></a-entity>
+
+  </a-scene>
+
+  <script>
+    const stars = document.getElementById("stars");
+
+    for (let i = 0; i < 500; i++) {
+      const star = document.createElement("a-sphere");
+      star.setAttribute("radius", Math.random() * 0.03 + 0.01);
+      star.setAttribute("color", "#ffffff");
+
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.random() * Math.PI;
+
+      const r = 30;
+      const x = r * Math.sin(phi) * Math.cos(theta);
+      const y = r * Math.cos(phi);
+      const z = r * Math.sin(phi) * Math.sin(theta);
+
+      star.setAttribute("position", `${x} ${y} ${z}`);
+      stars.appendChild(star);
+    }
+  </script>
+        <script>
+  document.body.style.cursor = "pointer";
+
+  document.body.addEventListener("touchstart", () => {
+    window.location.href = "Heart.html";
+  }, { once: true });
+</script>
+</body>
+</html>
