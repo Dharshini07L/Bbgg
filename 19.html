@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>19 Looks Irresistibly Sexy on You</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Tangerine:wght@700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            font-family: 'Great Vibes', cursive;
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 25%, #2d0a0a 50%, #1a0000 75%, #0a0000 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .bokeh-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .bokeh {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, rgba(255, 20, 147, 0.1) 50%, transparent 100%);
+            animation: float 20s infinite ease-in-out;
+            filter: blur(3px);
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.3; }
+            25% { transform: translateY(-30px) translateX(20px) scale(1.1); opacity: 0.5; }
+            50% { transform: translateY(-60px) translateX(-20px) scale(0.9); opacity: 0.3; }
+            75% { transform: translateY(-30px) translateX(30px) scale(1.05); opacity: 0.4; }
+        }
+        
+        .main-text {
+            position: relative;
+            z-index: 10;
+            font-size: clamp(2rem, 8vw, 5rem);
+            color: #fff;
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 
+                0 0 20px rgba(255, 105, 180, 0.8),
+                0 0 40px rgba(255, 20, 147, 0.6),
+                0 0 60px rgba(255, 105, 180, 0.4),
+                2px 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInGlow 2s ease-in-out forwards;
+            opacity: 0;
+            letter-spacing: 2px;
+            line-height: 1.4;
+        }
+        
+        @keyframes fadeInGlow {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0);
+            }
+        }
+        
+        .kiss-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .kiss {
+            position: absolute;
+            width: 50px;
+            height: 40px;
+            opacity: 0;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            animation: kissAppear 4s ease-in-out forwards;
+        }
+        
+        @keyframes kissAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            15% {
+                opacity: 0.9;
+                transform: scale(1.2) rotate(var(--rotation));
+            }
+            30% {
+                opacity: 1;
+                transform: scale(1) rotate(var(--rotation));
+            }
+            70% {
+                opacity: 1;
+                transform: scale(1) rotate(var(--rotation)) translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) rotate(var(--rotation)) translateY(20px);
+            }
+        }
+        
+        .kiss svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .main-text {
+                font-size: clamp(1.5rem, 10vw, 3rem);
+            }
+            
+            .kiss {
+                width: 40px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bokeh-container" id="bokehContainer"></div>
+    
+    <div class="main-text">
+        19 looks irresistibly sexy on you
+    </div>
+    
+    <div class="kiss-container" id="kissContainer"></div>
+    
+    <script>
+        // Create bokeh particles
+        const bokehContainer = document.getElementById('bokehContainer');
+        for (let i = 0; i < 15; i++) {
+            const bokeh = document.createElement('div');
+            bokeh.className = 'bokeh';
+            const size = Math.random() * 100 + 50;
+            bokeh.style.width = size + 'px';
+            bokeh.style.height = size + 'px';
+            bokeh.style.left = Math.random() * 100 + '%';
+            bokeh.style.top = Math.random() * 100 + '%';
+            bokeh.style.animationDelay = Math.random() * 10 + 's';
+            bokeh.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            bokehContainer.appendChild(bokeh);
+        }
+        
+        // Kiss mark SVG template
+        function createKissSVG(color) {
+            return `
+                <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="lipGrad${Math.random()}" cx="50%" cy="50%">
+                            <stop offset="0%" style="stop-color:${color};stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:${color};stop-opacity:0.7" />
+                        </radialGradient>
+                    </defs>
+                    <path d="M 25 35 Q 15 25, 20 15 Q 25 5, 35 10 Q 40 15, 40 25 Q 40 35, 50 40 Q 60 35, 60 25 Q 60 15, 65 10 Q 75 5, 80 15 Q 85 25, 75 35 Q 70 40, 65 42 Q 60 50, 55 55 Q 52 58, 50 60 Q 48 58, 45 55 Q 40 50, 35 42 Q 30 40, 25 35 Z" 
+                          fill="url(#lipGrad${Math.random()})" 
+                          opacity="0.85"/>
+                    <ellipse cx="30" cy="25" rx="8" ry="12" fill="${color}" opacity="0.6"/>
+                    <ellipse cx="70" cy="25" rx="8" ry="12" fill="${color}" opacity="0.6"/>
+                </svg>
+            `;
+        }
+        
+        // Create and animate kiss marks
+        const kissContainer = document.getElementById('kissContainer');
+        const colors = ['#FF1493', '#FF69B4', '#DC143C', '#C71585', '#FF006E'];
+        
+        function createKiss() {
+            const kiss = document.createElement('div');
+            kiss.className = 'kiss';
+            
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 100);
+            const rotation = Math.random() * 360 - 180;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const scale = 0.8 + Math.random() * 0.6;
+            
+            kiss.style.left = x + 'px';
+            kiss.style.top = y + 'px';
+            kiss.style.setProperty('--rotation', rotation + 'deg');
+            kiss.style.transform = `scale(${scale})`;
+            kiss.innerHTML = createKissSVG(color);
+            
+            kissContainer.appendChild(kiss);
+            
+            setTimeout(() => {
+                kiss.remove();
+            }, 4000);
+        }
+        
+        // Create kisses at intervals
+        setInterval(createKiss, 600);
+        
+        // Initial burst of kisses
+        for (let i = 0; i < 8; i++) {
+            setTimeout(createKiss, i * 300);
+        }
+    </script>
+    <script>
+  document.body.style.cursor = "pointer";
+
+  document.body.addEventListener("touchstart", () => {
+    window.location.href = "Countdown.html";
+  }, { once: true });
+</script>
+</body>
+</html>
