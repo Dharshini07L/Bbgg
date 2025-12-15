@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Incoming Call</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Glassy realistic background */
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #0b0b0b, #1c1c1c, #0b0b0b);
+    filter: blur(14px);
+    opacity: 0.95;
+    z-index: 0;
+}
+
+/* Subtle noise */
+body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+}
+
+.call-screen {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    height: 100%;
+    padding: 50px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    text-align: center;
+    z-index: 2;
+}
+
+.status {
+    font-size: 15px;
+    opacity: 0.85;
+}
+
+.caller {
+    margin-top: 60px;
+}
+
+.number {
+    font-size: 76px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    animation: breathe 2.5s infinite;
+}
+
+@keyframes breathe {
+    0%,100% { opacity: .9; }
+    50% { opacity: 1; }
+}
+
+.sub {
+    margin-top: 10px;
+    font-size: 18px;
+    opacity: .75;
+}
+
+.timer {
+    margin-top: 8px;
+    font-size: 16px;
+    display: none;
+    opacity: .8;
+}
+
+/* Swipe area */
+.swipe-area {
+    position: relative;
+    height: 78px;
+    border-radius: 40px;
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(18px);
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+
+.swipe-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: .7;
+}
+
+/* Answer button */
+.swipe-btn {
+    position: absolute;
+    left: 6px;
+    top: 6px;
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #3ef07f, #1fae5a);
+    box-shadow:
+        0 10px 25px rgba(0,0,0,.5),
+        inset 0 -3px 6px rgba(0,0,0,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    touch-action: none;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+/* End call button */
+.end-btn {
+    display: none; /* HIDDEN INITIALLY */
+    width: 80px;
+    height: 80px;
+    margin: auto;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ff5a5a, #c0392b);
+    box-shadow: 0 10px 25px rgba(0,0,0,.5);
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="call-screen">
+    <div class="status" id="statusText">Incoming call</div>
+
+    <div class="caller">
+        <div class="number" id="callNumber">18</div>
+        <div class="sub" id="callSub">calling…</div>
+        <div class="timer" id="timer">00:00</div>
+    </div>
+
+    <div>
+        <div class="swipe-area" id="swipeArea">
+            <div class="swipe-text">slide to answer</div>
+            <div class="swipe-btn" id="swipeBtn">📞</div>
+        </div>
+
+        <div class="end-btn" id="endBtn" onclick="endCall()">❌</div>
+    </div>
+</div>
+
+<script>
+const swipeBtn = document.getElementById("swipeBtn");
+const swipeArea = document.getElementById("swipeArea");
+const endBtn = document.getElementById("endBtn");
+
+let startX = 0;
+let moveX = 0;
+let answered = false;
+let seconds = 0;
+let timerInterval;
+
+swipeBtn.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+
+swipeBtn.addEventListener("touchmove", e => {
+    if (answered) return;
+    moveX = e.touches[0].clientX - startX;
+    if (moveX > 0 && moveX < swipeArea.offsetWidth - 80) {
+        swipeBtn.style.transform = `translateX(${moveX}px)`;
+    }
+});
+
+swipeBtn.addEventListener("touchend", () => {
+    if (moveX > swipeArea.offsetWidth / 2) {
+        answerCall();
+    } else {
+        swipeBtn.style.transform = "translateX(0)";
+    }
+    moveX = 0;
+});
+
+function answerCall() {
+    answered = true;
+    swipeArea.style.display = "none";
+    endBtn.style.display = "flex";
+
+    document.getElementById("statusText").innerText = "Call connected";
+    document.getElementById("callNumber").innerText = "19";
+    document.getElementById("callSub").innerText = "on call";
+    document.getElementById("timer").style.display = "block";
+
+    timerInterval = setInterval(() => {
+        seconds++;
+        const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const s = String(seconds % 60).padStart(2, "0");
+        document.getElementById("timer").innerText = `${m}:${s}`;
+    }, 1000);
+}
+
+function endCall() {
+    clearInterval(timerInterval);
+    window.location.href = "19.html";
+}
+</script>
+
+</body>
+</html>
