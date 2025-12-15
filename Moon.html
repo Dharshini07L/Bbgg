@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  </head>
+
+  <body>
+    <a-scene>
+
+      <!-- 360° Night Beach / Mountain Background -->
+      <a-sky src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" rotation="0 -90 0"></a-sky>
+
+      <!-- 💜 Main Floating Text -->
+      <a-entity position="0 1.2 -3"
+        animation="property: scale; to: 1.05 1.05 1; dir: alternate; dur: 2500; loop: true">
+        <a-text
+          value="I LOVE YOU TO THE MOON AND BACK 🌙💜"
+          color="#FFD6FF"
+          width="6"
+          align="center"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/roboto/Roboto-Regular.json"
+          animation__color="property: color; from: #FFD6FF; to: #FFFFFF; dur: 2000; dir: alternate; loop: true">
+        </a-text>
+      </a-entity>
+
+      <!-- ✨ Floating Sparkles using spheres -->
+      <a-sphere position="0 1.5 -2" radius="0.03" color="#ffffff" animation="property: rotation; to: 0 360 0; loop: true; dur: 4000"></a-sphere>
+      <a-sphere position="1 -0.2 -2" radius="0.02" color="#ffffff" animation="property: rotation; to: 0 360 0; loop: true; dur: 3500"></a-sphere>
+
+      <!-- ❤️ Small Birthday Message -->
+      <a-text
+        value="Happy Birthday deju ❤️"
+        position="0 -0.4 -2.3"
+        width="3"
+        align="center"
+        color="#FFB6C1"
+        animation="property: position; to: 0 -0.2 -2.3; dir: alternate; dur: 2000; loop: true">
+      </a-text>
+
+    </a-scene>
+    <script>
+let lastTap = 0; // timestamp of last tap
+
+function handleDoubleTap(e) {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapLength > 0 && tapLength < 400) {
+        // DOUBLE TAP detected → go to next page
+        window.location.href = "Pro.html"; // change to your page
+    }
+
+    lastTap = currentTime;
+}
+
+// Listen on the whole page
+document.addEventListener('touchstart', handleDoubleTap);
+document.addEventListener('click', handleDoubleTap);
+</script>
+  </body>
+</html>
